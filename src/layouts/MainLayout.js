@@ -16,7 +16,7 @@ const MainLayout = ({ children }) => {
   }
 
   const onSignOut = () => {
-    auth.SignOut();
+    auth.signOut();
     history.push("/login");
   }
 
