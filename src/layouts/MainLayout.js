@@ -7,8 +7,12 @@ import AuthContext from '../contexts/AuthContext';
 const MainLayout = ({ children }) => {
   const history = useHistory();
   const auth = useContext(AuthContext)
+
   const onSignIn = () => {
     history.replace("/login")
+  }
+  const onRegister = () => {
+    history.replace("/register")
   }
 
   const onSignOut = () => {
@@ -30,7 +34,11 @@ const MainLayout = ({ children }) => {
         {auth.token ? (
           <Nav.Link onClick={onSignOut}>Logout</Nav.Link>
         ) : (
-          <Nav.Link onClick={onSignIn}>Login</Nav.Link>
+          [
+
+            <Nav.Link key={1} onClick={onSignIn}>Login</Nav.Link>,
+            <Nav.Link key={2} onClick={onRegister}>Register</Nav.Link>
+          ]
         )}
         
       </Nav>
