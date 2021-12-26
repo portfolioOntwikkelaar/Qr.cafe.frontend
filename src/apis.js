@@ -21,15 +21,17 @@ function request(path, { data = null, token = null, method = "GET" }) {
     }
 
     // Otherwise, if there are errors
-    return response.json().then((json) => {
+    return response
+      .json()
+      .then((json) => {
       // Handle JSON error, response by the server
 
-      if (response.status === 400) {
-        const errors = Object.keys(json).map(
-          (k) => `${(json[k].join(" "))}`
+        if (response.status === 400) {
+          const errors = Object.keys(json).map(
+          (k) => `${json[k].join(" ")}`
         );
         throw new Error(errors.join(" "));
-      }
+        }
       throw new Error(JSON.stringify(json));
     })
     .catch((e) => {
@@ -63,4 +65,7 @@ export function register(username, password) {
 
 export function fetchPlaces(token) {
   return request("/api/places/", {token});
+}
+export function addPlace(data, token) {
+  return request("/api/places/", {data, token, method: "POST"});
 }
