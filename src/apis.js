@@ -28,14 +28,14 @@ function request(path, { data = null, token = null, method = "GET" }) {
 
         if (response.status === 400) {
           const errors = Object.keys(json).map(
-          (k) => `${json[k].join(" ")}`
+          (k) => `${(json[k].join(" "))}`
         );
         throw new Error(errors.join(" "));
         }
       throw new Error(JSON.stringify(json));
     })
     .catch((e) => {
-      if (e.name === "SynthaxError") {
+      if (e.name === "SyntaxError") {
         throw new Error(response.statusText);
       }
       throw new Error(e);
@@ -87,4 +87,12 @@ export function uploadImage(image) {
 
 export function fetchPlace(id, token) {
   return request(`/api/places/${id}`, {token});
+}
+
+export function addCategory(data, token) {
+  return request("/api/categories/", {data, token, method: "POST" });
+}
+
+export function addMenuItems(data, token) {
+  return request("/api/menu_items/", {data, token, method: "POST" });
 }
