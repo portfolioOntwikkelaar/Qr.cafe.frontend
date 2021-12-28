@@ -1,5 +1,5 @@
 import { IoMdArrowBack } from 'react-icons/io'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, Modal } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
 import React, { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components';
@@ -19,6 +19,11 @@ const Panel = styled.div`
 
 const Place = () => {
   const [place, setPlace] = useState({});
+  const [menuItemFormShow, setMenuItemFormShow] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const showModal = () => setMenuItemFormShow(true);
+  const hideModal = () => setMenuItemFormShow(false);
 
   const auth = useContext(AuthContext);
   const params = useParams();
@@ -35,6 +40,7 @@ const Place = () => {
 
   useEffect(() => {
     onFetchPlace();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <MainLayout>
@@ -62,12 +68,33 @@ const Place = () => {
               <b>{category.name}</b>
             </h4>
             {category.menu_items.map((item) => (
-              <MenuItem key={item.id} item={item} />
+              <MenuItem 
+                key={item.id} 
+                item={item} 
+                onEdit={() => {
+                  setSelectedItem(item);
+                  showModal()
+                }}
+                />
             ))}
           </div>
         ))}
       </Col>
       </Row>
+    
+      <Modal show={menuItemFormShow} onHide={hideModal} centered>
+        <Modal.Body>
+          <h4 className="text-center">Menu Item</h4>
+          <MenuItemForm 
+            place={place}
+            onDone={() => {
+              onFetchPlace();
+              hideModal()
+            }}
+            item={selectedItem}
+          />
+        </Modal.Body>
+      </Modal>
     </MainLayout>
   )
 }

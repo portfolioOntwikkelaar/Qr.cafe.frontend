@@ -3,20 +3,21 @@ import { Button, Form, Popover, Overlay } from 'react-bootstrap';
 import { RiPlayListAddFill } from 'react-icons/ri';
 import { toast } from 'react-toastify'
 
-import { addCategory, addMenuItems } from '../apis';
+import { addCategory, addMenuItems, updateMenuItem } from '../apis';
 import AuthContext from '../contexts/AuthContext'
 import ImageDropzone from './ImageDropzone'
 
-const MenuItemForm = ({ place, onDone }) => {
+const MenuItemForm = ({ place, onDone, item = {} }) => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryFormShow, setCategoryFormShow] = useState(false);
-  const [category, setCategory] = useState("");
+  
+  const [category, setCategory] = useState(item.category);
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [isAvailable, setIsAvailable] = useState(true);
+  const [name, setName] = useState(item.name);
+  const [price, setPrice] = useState(item.price || 0);
+  const [description, setDescription] = useState(item.description);
+  const [image, setImage] = useState(item.image);
+  const [isAvailable, setIsAvailable] = useState(item.is_available === undefined ? true : !!item.is_available);
   
   const target = useRef(null);
   const auth = useContext(AuthContext);
@@ -55,6 +56,34 @@ const MenuItemForm = ({ place, onDone }) => {
       onDone();
 
     }
+  }
+
+  const onUpdateMenuItem = async () => {
+    const json = await updateMenuItem(
+      item.id,
+      {
+        place: place.id,
+        category,
+        name,
+        price,
+        description,
+        image,
+        is_available: isAvailable
+      },
+      auth.token
+    );
+    
+      if (json) {
+        console.log(json)
+        toast(`Menu item ${json.name} was updated`, { type: "success" });
+        setCategory("");
+        setName("");
+        setPrice(0);
+        setDescription("");
+        setImage("");
+        setIsAvailable(false);
+        onDone();
+      }
   }
 
   return (
@@ -145,8 +174,12 @@ const MenuItemForm = ({ place, onDone }) => {
        />
        
      </Form.Group>
-     <Button variant="standard" block onClick={onAddMenuItems}>
-       + Add Menu Item
+     <Button 
+       variant="standard" 
+       block 
+       onClick={item.id ? onUpdateMenuItem : onAddMenuItems}>
+         {item.id ? "Update Menu Item" : "+ Add Menu Item"}
+       
      </Button>
    </div>
   );
