@@ -101,6 +101,12 @@ export function updateMenuItem(id, data, token) {
   return request(`/api/menu_items/${id}`, {data, token, method: "PATCH" });
 }
 
-export function RemovePlace(id, token) {
+export function removePlace(id, token) {
   return request(`/api/places/${id}`, {token, method: "DELETE" });
+}
+export function removeCategory(id, token) {
+  return request(`/api/categories/${id}`, {token, method: "DELETE" });
+}
+export function removeMenuItem(id, token) {
+  return request(`/api/menu_items/${id}`, {token, method: "DELETE" });
 }

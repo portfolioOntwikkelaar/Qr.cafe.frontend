@@ -2,6 +2,7 @@ import { Col, Button  } from 'react-bootstrap'
 import React from 'react'
 import styled from 'styled-components'
 import { BiEdit } from 'react-icons/bi'
+import { AiOutlineDelete } from 'react-icons/ai'
 
 const Container = styled.div`
   border-radius: 5px;
@@ -22,7 +23,7 @@ const Container = styled.div`
   }
 `;
 
-const MenuItem = ({ item, onEdit }) => (
+const MenuItem = ({ item, onEdit, onRemove }) => (
   <Container active={item.is_available}>
     <Col xs={5} style={{ backgroundImage: `url(${item.image})`}} />
     <Col xs={7} className="d-flex flex-column justify-content-between w-100">
@@ -37,6 +38,11 @@ const MenuItem = ({ item, onEdit }) => (
             {onEdit ? (
               <Button variant="link" onClick={onEdit}>
                 <BiEdit size={20} />
+              </Button>
+            ) : null}
+            {onRemove ? (
+              <Button variant="link" onClick={onRemove}>
+                <AiOutlineDelete size={20} color="red" />
               </Button>
             ) : null}
           </div>

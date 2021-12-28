@@ -44,7 +44,7 @@ const MenuItemForm = ({ place, onDone, item = {} }) => {
       image,
       is_available: isAvailable
     }, auth.token);
-    console.log(json)
+    console.log(json);
     if (json) {
       toast(`Menu item ${json.name} was created`, { type: "success" });
       setCategory("");
@@ -106,7 +106,7 @@ const MenuItemForm = ({ place, onDone, item = {} }) => {
          <Overlay 
            show={categoryFormShow} 
            target={target.current}  
-           placement="bottom" rootClose onHide={() => setCategoryFormShow(true)}>
+           placement="bottom" rootClose onHide={() => setCategoryFormShow(false)}>
              <Popover id="popover-contained">
                <Popover.Title as="h3">Category</Popover.Title>
                <Popover.Content>

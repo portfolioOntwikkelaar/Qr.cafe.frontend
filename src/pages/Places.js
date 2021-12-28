@@ -61,7 +61,7 @@ const Places = () => {
   const onDone = () => {
     onFetchPlaces();
     onHide();
-  };
+  }
   useEffect(() => {
     onFetchPlaces();
 
